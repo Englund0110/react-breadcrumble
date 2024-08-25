@@ -4,6 +4,10 @@
   "description": "Library for building beautiful breadcrumbs in react",
   "author": "Søren Englund",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Englund0110/react-breadcrumble"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
