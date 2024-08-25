@@ -1,7 +1,9 @@
 {
   "name": "react-breadcrumble",
   "version": "1.0.0",
-  "description": "",
+  "description": "Library for building beautiful breadcrumbs in react",
+  "author": "Søren Englund",
+  "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
@@ -18,8 +20,6 @@
   "scripts": {
     "build": "rollup -c"
   },
-  "author": "",
-  "license": "ISC",
   "peerDependencies": {
     "react": "^18.3.1"
   },
