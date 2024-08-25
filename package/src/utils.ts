@@ -4,7 +4,12 @@ export const getBreadcrumbByPath = (
   path: string,
   definitions: Breadcrumb[]
 ): Breadcrumb | undefined => {
-  return definitions.find((b) => b.path === path);
+  return definitions.find((breadcrumb) => {
+    // Match breadcrumb path with the given path considering dynamic segments.
+    const breadcrumbPath = breadcrumb.path.replace(/{[^/]+}/g, "([^/]+)");
+    const regex = new RegExp(`^${breadcrumbPath}$`);
+    return regex.test(path);
+  });
 };
 
 export const buildTrail = (
