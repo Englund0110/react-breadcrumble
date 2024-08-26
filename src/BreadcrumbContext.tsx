@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { Breadcrumb } from "./types";
 
 type BreadcrumbContextType = {
@@ -20,17 +20,20 @@ export const BreadcrumbProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
 
-  const updateBreadcrumb = (
-    path: string,
-    newLabel: string,
-    params?: { key: string; value: string }[]
-  ) => {
-    setBreadcrumbs((prevBreadcrumbs) =>
-      prevBreadcrumbs.map((b) =>
-        b.path === path ? { ...b, label: newLabel, params } : b
-      )
-    );
-  };
+  const updateBreadcrumb = useCallback(
+    (
+      path: string,
+      newLabel: string,
+      params?: { key: string; value: string }[]
+    ) => {
+      setBreadcrumbs((prevBreadcrumbs) =>
+        prevBreadcrumbs.map((b) =>
+          b.path === path ? { ...b, label: newLabel, params } : b
+        )
+      );
+    },
+    [setBreadcrumbs]
+  );
 
   return (
     <BreadcrumbContext.Provider
