@@ -1,6 +1,6 @@
 # react-breadcrumble
 
-Library for building beautiful breadcrumbs in React.
+A flexible and easy-to-use library for managing breadcrumbs in React applications.
 
 ## Overview
 
@@ -80,5 +80,3 @@ const Breadcrumbs: React.FC = () => {
 
 export default Breadcrumbs;
 ```
-
-![example 1](example1.png)
