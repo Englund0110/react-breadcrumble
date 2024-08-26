@@ -13,7 +13,7 @@ function User() {
 
   useEffect(() => {
     setUser(users.find((u) => u.id === userId));
-  }, [user, users]);
+  }, [userId]);
 
   useEffect(() => {
     updateBreadcrumb("/users/{id}", user?.name ?? "", [
@@ -23,7 +23,7 @@ function User() {
     return () => {
       updateBreadcrumb("/users/{id}", "");
     };
-  }, [user]);
+  }, [user, updateBreadcrumb]);
 
   return (
     <>
