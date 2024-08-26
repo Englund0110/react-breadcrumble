@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { replacePathParams, useBreadcrumbTrail } from "react-breadcrumble";
+import { useBreadcrumbTrail, transformPath } from "react-breadcrumble";
 
 export const Breadcrumbs = () => {
   const router = useRouterState();
@@ -9,7 +9,7 @@ export const Breadcrumbs = () => {
     <ul className="breadcrumb">
       {trail.map((breadcrumb, index) => (
         <li key={index}>
-          <Link to={replacePathParams(breadcrumb)}>{breadcrumb.label}</Link>
+          <Link to={transformPath(breadcrumb)}>{breadcrumb.label}</Link>
         </li>
       ))}
     </ul>

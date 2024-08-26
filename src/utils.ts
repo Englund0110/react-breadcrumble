@@ -1,6 +1,6 @@
 import { Breadcrumb } from "./types";
 
-export const findBreadcrumbByPath = (
+export const getBreadcrumbByPath = (
   path: string,
   definitions: Breadcrumb[]
 ): Breadcrumb | undefined => {
@@ -12,12 +12,12 @@ export const findBreadcrumbByPath = (
   });
 };
 
-export const buildBreadcrumbTrail = (
+export const buildTrail = (
   currentPath: string,
   definitions: Breadcrumb[],
   trail: Breadcrumb[] = []
 ): Breadcrumb[] => {
-  const currentBreadcrumb = findBreadcrumbByPath(currentPath, definitions);
+  const currentBreadcrumb = getBreadcrumbByPath(currentPath, definitions);
 
   if (!currentBreadcrumb) {
     return trail;
@@ -26,7 +26,7 @@ export const buildBreadcrumbTrail = (
   trail.unshift(currentBreadcrumb);
 
   if (currentBreadcrumb.parent) {
-    return buildBreadcrumbTrail(currentBreadcrumb.parent, definitions, trail);
+    return buildTrail(currentBreadcrumb.parent, definitions, trail);
   }
 
   return trail;
@@ -52,7 +52,7 @@ export const buildBreadcrumbTrail = (
  * const result = transformPath(breadcrumb);
  * console.log(result); // Output: '/users/1234/details'
  */
-export const replacePathParams = (breadcrumb: Breadcrumb) => {
+export const transformPath = (breadcrumb: Breadcrumb) => {
   let transformedPath = breadcrumb.path;
 
   breadcrumb.params?.forEach((p) => {

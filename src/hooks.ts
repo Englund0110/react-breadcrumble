@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { BreadcrumbContext } from "./BreadcrumbContext";
-import { buildBreadcrumbTrail } from "./utils";
+import { buildTrail } from "./utils";
 import { Breadcrumb } from "./types";
 
 export const useBreadcrumbs = () => {
@@ -16,7 +16,7 @@ export const useBreadcrumbTrail = (currentPath: string) => {
   const [breadcrumbTrail, setBreadcrumbTrail] = useState<Breadcrumb[]>([]);
 
   useEffect(() => {
-    setBreadcrumbTrail(buildBreadcrumbTrail(currentPath, breadcrumbs));
+    setBreadcrumbTrail(buildTrail(currentPath, breadcrumbs));
   }, [breadcrumbs, currentPath]);
 
   return breadcrumbTrail;
