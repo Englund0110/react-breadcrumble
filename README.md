@@ -1,6 +1,6 @@
 # react-breadcrumble
 
-Library for building beautiful breadcrumbs in React.
+A flexible and easy-to-use library for managing breadcrumbs in React applications.
 
 ## Overview
 
