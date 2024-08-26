@@ -1,5 +1,7 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BreadcrumbContext } from "./BreadcrumbContext";
+import { buildBreadcrumbTrail } from "./utils";
+import { Breadcrumb } from "./types";
 
 export const useBreadcrumbs = () => {
   const context = useContext(BreadcrumbContext);
@@ -7,4 +9,15 @@ export const useBreadcrumbs = () => {
     throw new Error("useBreadcrumbs must be used within a BreadcrumbProvider");
   }
   return context;
+};
+
+export const useBreadcrumbTrail = (currentPath: string) => {
+  const { breadcrumbs } = useBreadcrumbs();
+  const [breadcrumbTrail, setBreadcrumbTrail] = useState<Breadcrumb[]>([]);
+
+  useEffect(() => {
+    setBreadcrumbTrail(buildBreadcrumbTrail(currentPath, breadcrumbs));
+  }, [breadcrumbs, currentPath]);
+
+  return breadcrumbTrail;
 };
