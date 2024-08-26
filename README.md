@@ -80,5 +80,3 @@ const Breadcrumbs: React.FC = () => {
 
 export default Breadcrumbs;
 ```
-
-![example 1](example1.png)
