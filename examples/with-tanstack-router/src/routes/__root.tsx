@@ -1,28 +1,18 @@
-import {
-  createRootRoute,
-  Link,
-  Outlet,
-  useRouterState,
-} from "@tanstack/react-router";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { useEffect, useState } from "react";
-import {
-  Breadcrumb,
-  buildTrail,
-  transformPath,
-  useBreadcrumbs,
-} from "react-breadcrumble";
+import { useEffect } from "react";
+import { useBreadcrumbs } from "react-breadcrumble";
 import { Navbar } from "../components/Navbar";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 
 export const Route = createRootRoute({
   component: Root,
 });
 
 function Root() {
-  const router = useRouterState();
-  const { setBreadcrumbs, breadcrumbs } = useBreadcrumbs();
-  const [breadcrumbTrail, setBreadcrumbTrail] = useState<Breadcrumb[]>([]);
+  const { setBreadcrumbs } = useBreadcrumbs();
 
+  // Set initial breadcrumbs.
   useEffect(() => {
     setBreadcrumbs([
       { label: "Home", path: "/" },
@@ -32,20 +22,10 @@ function Root() {
     ]);
   }, [setBreadcrumbs]);
 
-  useEffect(() => {
-    setBreadcrumbTrail(buildTrail(router.location.pathname, breadcrumbs));
-  }, [breadcrumbs, router.location.pathname]);
-
   return (
     <>
       <Navbar />
-      <ul className="breadcrumb">
-        {breadcrumbTrail.map((breadcrumb, index) => (
-          <li key={index}>
-            <Link to={transformPath(breadcrumb)}>{breadcrumb.label}</Link>
-          </li>
-        ))}
-      </ul>
+      <Breadcrumbs />
       <div className="content">
         <Outlet />
       </div>

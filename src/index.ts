@@ -1,4 +1,8 @@
 export * from "./types";
 export { BreadcrumbProvider, BreadcrumbContext } from "./BreadcrumbContext";
-export { useBreadcrumbs } from "./hooks";
-export { getBreadcrumbByPath, buildTrail, transformPath } from "./utils";
+export { useBreadcrumbs, useBreadcrumbTrail } from "./hooks";
+export {
+  matchBreadcrumbByPath,
+  buildBreadcrumbTrail,
+  replacePathParams,
+} from "./utils";
