@@ -19,7 +19,7 @@ A flexible and easy-to-use library for managing breadcrumbs in React application
 
 ## Example of usage with TanStack/Router
 
-This guide demonstrates how to integrate breadcrumb navigation into your application using TanStack/Router with react-breadcrumble.
+This guide shows how to integrate breadcrumb navigation into your application using TanStack/Router with react-breadcrumble. You can also use this approach as inspiration for implementing breadcrumbs with other router libraries.
 
 ### Simple
 
