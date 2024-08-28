@@ -1,9 +1,22 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useBreadcrumbTrail, replacePathParams } from "react-breadcrumble";
+import { useEffect } from "react";
+import { replacePathParams, useBreadcrumbs } from "react-breadcrumble";
 
 export const Breadcrumbs = () => {
   const router = useRouterState();
+  const { setBreadcrumbs, useBreadcrumbTrail } = useBreadcrumbs();
+
   const trail = useBreadcrumbTrail(router.location.pathname);
+
+  // Set initial breadcrumbs.
+  useEffect(() => {
+    setBreadcrumbs([
+      { label: "Home", path: "/" },
+      { label: "About", path: "/about", parent: "/" },
+      { label: "Users", path: "/users", parent: "/" },
+      { label: "User", path: "/users/{id}", parent: "/users" },
+    ]);
+  }, [setBreadcrumbs]);
 
   return (
     <ul className="breadcrumb">

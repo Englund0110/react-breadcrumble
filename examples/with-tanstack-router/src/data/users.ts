@@ -18,6 +18,6 @@ export const users: UserModel[] = [
   {
     id: "3",
     name: "Søren Englund",
-    description: "Creator of react-breadcrumbles.",
+    description: "Creator of react-breadcrumble.",
   },
 ];
