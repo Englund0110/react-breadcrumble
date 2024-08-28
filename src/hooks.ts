@@ -11,6 +11,9 @@ export const useBreadcrumbs = () => {
   return context;
 };
 
+/**
+ * @deprecated This function is deprecated. Use the `getBreadcrumbTrail` function returned by the `useBreadcrumbs` hook instead.
+ */
 export const useBreadcrumbTrail = (currentPath: string): Breadcrumb[] => {
   const { breadcrumbs } = useBreadcrumbs();
 
