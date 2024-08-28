@@ -74,10 +74,6 @@ Desktop.ini
 # Exported static files (next.js)
 out/
 
-# Lock files
-yarn.lock
-package-lock.json
-
 # npm package directory
 *.tgz
 
