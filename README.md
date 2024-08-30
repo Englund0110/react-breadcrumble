@@ -42,11 +42,24 @@ Create a component that dynamically generates the breadcrumb trail based on the 
 ```typescript
 // Breadcrumbs.tsx
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useBreadcrumbTrail, replacePathParams } from "react-breadcrumble";
+import { useEffect } from "react";
+import { replacePathParams, useBreadcrumbs } from "react-breadcrumble";
 
 export const Breadcrumbs = () => {
   const router = useRouterState();
+  const { setBreadcrumbs, useBreadcrumbTrail } = useBreadcrumbs();
+
   const trail = useBreadcrumbTrail(router.location.pathname);
+
+  // Set initial breadcrumbs.
+  useEffect(() => {
+    setBreadcrumbs([
+      { label: "Home", path: "/" },
+      { label: "About", path: "/about", parent: "/" },
+      { label: "Users", path: "/users", parent: "/" },
+      { label: "User", path: "/users/{id}", parent: "/users" },
+    ]);
+  }, [setBreadcrumbs]);
 
   return (
     <ul className="breadcrumb">
@@ -62,43 +75,11 @@ export const Breadcrumbs = () => {
 };
 ```
 
-Use the useBreadcrumbs hook to set up your breadcrumb paths and then render the Breadcrumbs component in your layout.
-
-```typescript
-// __root.tsx
-export const Route = createRootRoute({
-  component: Root,
-});
-
-function Root() {
-  const { setBreadcrumbs } = useBreadcrumbs();
-
-  // Set initial breadcrumbs.
-  useEffect(() => {
-    setBreadcrumbs([
-      { label: "Home", path: "/" },
-      { label: "About", path: "/about", parent: "/" },
-      { label: "Users", path: "/users", parent: "/" },
-      { label: "User", path: "/users/{id}", parent: "/users" },
-    ]);
-  }, [setBreadcrumbs]);
-
-  return (
-    <>
-      <Navbar />
-      <Breadcrumbs />
-      <div className="content">
-        <Outlet />
-      </div>
-      <TanStackRouterDevtools />
-    </>
-  );
-}
-```
-
 ### Update breadcrumb dynamically
 
-To update a breadcrumb label based on external data (e.g., user details), use the updateBreadcrumb function. This allows you to modify the breadcrumb trail dynamically.
+To update a breadcrumb label based on external data (e.g., user details), use the `updateBreadcrumb` function. This allows you to modify the breadcrumb trail dynamically.
+
+#### Example
 
 ```typescript
 // users_.$userId.tsx
