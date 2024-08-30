@@ -23,7 +23,6 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "clean": "node clean.js",
     "test": "vitest"
   },
   "peerDependencies": {
