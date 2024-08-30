@@ -4,9 +4,9 @@ import { replacePathParams, useBreadcrumbs } from "react-breadcrumble";
 
 export const Breadcrumbs = () => {
   const router = useRouterState();
-  const { setBreadcrumbs, useBreadcrumbTrail } = useBreadcrumbs();
+  const { setBreadcrumbs, getBreadcrumbTrail } = useBreadcrumbs();
 
-  const trail = useBreadcrumbTrail(router.location.pathname);
+  const trail = getBreadcrumbTrail(router.location.pathname);
 
   // Set initial breadcrumbs.
   useEffect(() => {
