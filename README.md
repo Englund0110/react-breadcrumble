@@ -17,11 +17,14 @@ A flexible and easy-to-use library for managing breadcrumbs in React application
 
 `npm install react-breadcrumble`
 
-## Example of usage with TanStack/Router
+## Examples
+See the following StackBlitz examples for full implementation:
 
-This guide shows how to integrate breadcrumb navigation into your application using TanStack/Router with react-breadcrumble. You can also use this approach as inspiration for implementing breadcrumbs with other router libraries.
+- With React Router v6.2: https://stackblitz.com/edit/vitejs-vite-grxaz2?file=src%2Fcomponents%2FBreadcrumbs.tsx
 
-### Simple
+- With TanStack/Router: https://stackblitz.com/edit/vitejs-vite-t4wgva?file=src%2Fcomponents%2FBreadcrumbs.tsx
+
+### Simple implementation
 
 Wrapping the application with BreadcrumbProvider.
 
@@ -30,7 +33,6 @@ Wrapping the application with BreadcrumbProvider.
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BreadcrumbProvider>
-      <RouterProvider router={router} />
       ...
     </BreadcrumbProvider>
   </StrictMode>
@@ -41,15 +43,14 @@ Create a component that dynamically generates the breadcrumb trail based on the 
 
 ```typescript
 // Breadcrumbs.tsx
-import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { replacePathParams, useBreadcrumbs } from "react-breadcrumble";
 
 export const Breadcrumbs = () => {
-  const router = useRouterState();
+  const currentPath = window.location.pathname;
   const { setBreadcrumbs, getBreadcrumbTrail } = useBreadcrumbs();
 
-  const trail = getBreadcrumbTrail(router.location.pathname);
+  const trail = getBreadcrumbTrail(currentPath);
 
   // Set initial breadcrumbs.
   useEffect(() => {
@@ -65,9 +66,9 @@ export const Breadcrumbs = () => {
     <ul className="breadcrumb">
       {trail.map((breadcrumb, index) => (
         <li key={index}>
-          <Link to={replacePathParams(breadcrumb.path, breadcrumb.params)}>
+          <a href={replacePathParams(breadcrumb.path, breadcrumb.params)}>
             {breadcrumb.label}
-          </Link>
+          </a>
         </li>
       ))}
     </ul>
@@ -79,10 +80,8 @@ export const Breadcrumbs = () => {
 
 To update a breadcrumb label based on external data (e.g., user details), use the `updateBreadcrumb` function. This allows you to modify the breadcrumb trail dynamically.
 
-#### Example
-
 ```typescript
-// users_.$userId.tsx
+// User.tsx
 function User() {
   const [user, setUser] = useState<UserModel>();
   const { userId } = Route.useParams();
