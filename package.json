@@ -1,6 +1,6 @@
 {
   "name": "react-breadcrumble",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A flexible and easy-to-use library for managing breadcrumbs in React applications",
   "author": "Søren Englund",
   "license": "MIT",
