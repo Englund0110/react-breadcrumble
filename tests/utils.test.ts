@@ -1,8 +1,12 @@
 import { expect, test } from "vitest";
-import { buildTrail, getBreadcrumbByPath, transformPath } from "../src/utils";
+import {
+  buildBreadcrumbTrail,
+  matchBreadcrumbByPath,
+  replacePathParams,
+} from "../src/utils";
 import { Breadcrumb } from "../src/types";
 
-// getBreadcrumbByPath
+// matchBreadcrumbByPath
 test("getBreadcrumbByPath finds breadcrumb for given path", () => {
   const breadcrumbs: Breadcrumb[] = [
     { path: "/", label: "Home" },
@@ -13,35 +17,35 @@ test("getBreadcrumbByPath finds breadcrumb for given path", () => {
     { path: "/about", label: "About" },
   ];
 
-  expect(getBreadcrumbByPath("/", breadcrumbs)).toStrictEqual({
+  expect(matchBreadcrumbByPath("/", breadcrumbs)).toStrictEqual({
     path: "/",
     label: "Home",
   });
 
-  expect(getBreadcrumbByPath("/users", breadcrumbs)).toStrictEqual({
+  expect(matchBreadcrumbByPath("/users", breadcrumbs)).toStrictEqual({
     path: "/users",
     label: "Users",
   });
 
-  expect(getBreadcrumbByPath("/users/123", breadcrumbs)).toStrictEqual({
+  expect(matchBreadcrumbByPath("/users/123", breadcrumbs)).toStrictEqual({
     path: "/users/{id}",
     label: "User",
   });
 
-  expect(getBreadcrumbByPath("/users/123/posts", breadcrumbs)).toStrictEqual({
+  expect(matchBreadcrumbByPath("/users/123/posts", breadcrumbs)).toStrictEqual({
     path: "/users/{id}/posts",
     label: "Posts",
   });
 
   expect(
-    getBreadcrumbByPath("/users/123/posts/{id}", breadcrumbs)
+    matchBreadcrumbByPath("/users/123/posts/{id}", breadcrumbs)
   ).toStrictEqual({
     path: "/users/{id}/posts/{id}",
     label: "Post",
   });
 });
 
-// buildTrail
+// buildBreadcrumbTrail
 test("buildTrail returns breadcrumbs for given path", () => {
   const breadcrumbs: Breadcrumb[] = [
     { path: "/", label: "Home" },
@@ -56,31 +60,35 @@ test("buildTrail returns breadcrumbs for given path", () => {
     { path: "/about", label: "About" },
   ];
 
-  expect(buildTrail("/does-not-exist", breadcrumbs)).toStrictEqual([]);
+  expect(buildBreadcrumbTrail("/does-not-exist", breadcrumbs)).toStrictEqual(
+    []
+  );
 
-  expect(buildTrail("/", breadcrumbs)).toStrictEqual([
+  expect(buildBreadcrumbTrail("/", breadcrumbs)).toStrictEqual([
     { path: "/", label: "Home" },
   ]);
 
-  expect(buildTrail("/users", breadcrumbs)).toStrictEqual([
+  expect(buildBreadcrumbTrail("/users", breadcrumbs)).toStrictEqual([
     { path: "/", label: "Home" },
     { path: "/users", label: "Users", parent: "/" },
   ]);
 
-  expect(buildTrail("/users/123", breadcrumbs)).toStrictEqual([
+  expect(buildBreadcrumbTrail("/users/123", breadcrumbs)).toStrictEqual([
     { path: "/", label: "Home" },
     { path: "/users", label: "Users", parent: "/" },
     { path: "/users/{id}", label: "User", parent: "/users" },
   ]);
 
-  expect(buildTrail("/users/123/posts", breadcrumbs)).toStrictEqual([
+  expect(buildBreadcrumbTrail("/users/123/posts", breadcrumbs)).toStrictEqual([
     { path: "/", label: "Home" },
     { path: "/users", label: "Users", parent: "/" },
     { path: "/users/{id}", label: "User", parent: "/users" },
     { path: "/users/{id}/posts", label: "Posts", parent: "/users/{id}" },
   ]);
 
-  expect(buildTrail("/users/123/posts/321", breadcrumbs)).toStrictEqual([
+  expect(
+    buildBreadcrumbTrail("/users/123/posts/321", breadcrumbs)
+  ).toStrictEqual([
     { path: "/", label: "Home" },
     { path: "/users", label: "Users", parent: "/" },
     { path: "/users/{id}", label: "User", parent: "/users" },
@@ -97,7 +105,9 @@ test("buildTrail returns breadcrumbs for given path", () => {
 test("should replace placeholders with corresponding values", () => {
   let breadcrumb: Breadcrumb | undefined = undefined;
   breadcrumb = { path: "/users", label: "Users", parent: "/" };
-  expect(transformPath(breadcrumb)).toStrictEqual("/users");
+  expect(replacePathParams(breadcrumb.path, breadcrumb.params)).toStrictEqual(
+    "/users"
+  );
 
   breadcrumb = {
     path: "/users/{id}",
@@ -105,7 +115,9 @@ test("should replace placeholders with corresponding values", () => {
     params: [{ key: "ids", value: "123" }], // Incorrect key
     parent: "/users",
   };
-  expect(transformPath(breadcrumb)).toStrictEqual("/users/{id}");
+  expect(replacePathParams(breadcrumb.path, breadcrumb.params)).toStrictEqual(
+    "/users/{id}"
+  );
 
   breadcrumb = {
     path: "/users/{id}",
@@ -113,7 +125,9 @@ test("should replace placeholders with corresponding values", () => {
     params: [{ key: "id", value: "123" }],
     parent: "/users",
   };
-  expect(transformPath(breadcrumb)).toStrictEqual("/users/123");
+  expect(replacePathParams(breadcrumb.path, breadcrumb.params)).toStrictEqual(
+    "/users/123"
+  );
 
   breadcrumb = {
     path: "/users/{id}/posts",
@@ -121,7 +135,9 @@ test("should replace placeholders with corresponding values", () => {
     params: [{ key: "id", value: "123" }],
     parent: "/users",
   };
-  expect(transformPath(breadcrumb)).toStrictEqual("/users/123/posts");
+  expect(replacePathParams(breadcrumb.path, breadcrumb.params)).toStrictEqual(
+    "/users/123/posts"
+  );
 
   breadcrumb = {
     path: "/users/{id}/posts/{id}",
@@ -132,5 +148,7 @@ test("should replace placeholders with corresponding values", () => {
     ],
     parent: "/users",
   };
-  expect(transformPath(breadcrumb)).toStrictEqual("/users/123/posts/312");
+  expect(replacePathParams(breadcrumb.path, breadcrumb.params)).toStrictEqual(
+    "/users/123/posts/312"
+  );
 });

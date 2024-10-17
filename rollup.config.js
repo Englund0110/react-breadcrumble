@@ -2,6 +2,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import external from "rollup-plugin-peer-deps-external";
+import cleanDist from "./clean.js";
 
 export default {
   input: "src/index.ts",
@@ -16,6 +17,7 @@ export default {
     },
   ],
   plugins: [
+    cleanDist(),
     external(),
     resolve(),
     commonjs(),
