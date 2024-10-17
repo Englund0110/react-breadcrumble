@@ -13,13 +13,15 @@ type BreadcrumbContextType = {
   getBreadcrumbTrail: (currentPath: string) => Breadcrumb[];
 };
 
+type BreadcrumbProviderProps = {
+  children: React.ReactNode;
+};
+
 export const BreadcrumbContext = createContext<
   BreadcrumbContextType | undefined
 >(undefined);
 
-export const BreadcrumbProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
 
   const updateBreadcrumb = useCallback(
