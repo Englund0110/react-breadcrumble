@@ -16,12 +16,6 @@ export default {
       format: "es",
     },
   ],
-  plugins: [
-    cleanDist(),
-    external(),
-    resolve(),
-    commonjs(),
-    typescript({ tsconfig: "./tsconfig.json" }),
-  ],
+  plugins: [cleanDist(), external(), resolve(), commonjs(), typescript()],
   external: ["react", "react-dom"],
 };
