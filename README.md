@@ -18,12 +18,12 @@ A flexible and easy-to-use library for managing breadcrumbs in React application
 `npm install react-breadcrumble`
 
 ## Examples
+
 See the following StackBlitz examples for full implementation:
 
 [With React Router v6.2](https://stackblitz.com/edit/vitejs-vite-grxaz2?file=src%2Fcomponents%2FBreadcrumbs.tsx)
 
 [With TanStack/Router](https://stackblitz.com/edit/vitejs-vite-t4wgva?file=src%2Fcomponents%2FBreadcrumbs.tsx)
-
 
 ### Simple implementation
 
@@ -33,9 +33,7 @@ Wrapping the application with BreadcrumbProvider.
 // main.tsx
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BreadcrumbProvider>
-      ...
-    </BreadcrumbProvider>
+    <BreadcrumbProvider>...</BreadcrumbProvider>
   </StrictMode>
 );
 ```
