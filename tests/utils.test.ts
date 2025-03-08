@@ -14,6 +14,9 @@ test("getBreadcrumbByPath finds breadcrumb for given path", () => {
     { path: "/users/{id}", label: "User" },
     { path: "/users/{id}/posts", label: "Posts" },
     { path: "/users/{id}/posts/{id}", label: "Post" },
+    { path: "/users/{id}/posts/{id}/*", label: "Post" },
+    { path: "/users/{id}/posts/{id}/*/comments", label: "Comments" },
+    { path: "/users/{id}/posts/{id}/*/likes", label: "Likes" },
     { path: "/about", label: "About" },
   ];
 
@@ -43,6 +46,30 @@ test("getBreadcrumbByPath finds breadcrumb for given path", () => {
     path: "/users/{id}/posts/{id}",
     label: "Post",
   });
+
+  expect(
+    matchBreadcrumbByPath("/users/123/posts/{id}/wildcard", breadcrumbs)
+  ).toStrictEqual({
+    path: "/users/{id}/posts/{id}/*",
+    label: "Post",
+  });
+
+  expect(
+    matchBreadcrumbByPath(
+      "/users/123/posts/{id}/wildcard/comments",
+      breadcrumbs
+    )
+  ).toStrictEqual({
+    path: "/users/{id}/posts/{id}/*/comments",
+    label: "Comments",
+  });
+
+  expect(
+    matchBreadcrumbByPath("/users/123/posts/{id}/wildcard/likes", breadcrumbs)
+  ).toStrictEqual({
+    path: "/users/{id}/posts/{id}/*/likes",
+    label: "Likes",
+  });
 });
 
 // buildBreadcrumbTrail
@@ -56,6 +83,16 @@ test("buildTrail returns breadcrumbs for given path", () => {
       path: "/users/{id}/posts/{id}",
       label: "Post",
       parent: "/users/{id}/posts",
+    },
+    {
+      path: "/users/{id}/posts/{id}/*",
+      label: "Post",
+      parent: "/users/{id}/posts/{id}",
+    },
+    {
+      path: "/users/{id}/posts/{id}/*/comments",
+      label: "Comments",
+      parent: "/users/{id}/posts/{id}/*",
     },
     { path: "/about", label: "About" },
   ];
@@ -97,6 +134,49 @@ test("buildTrail returns breadcrumbs for given path", () => {
       path: "/users/{id}/posts/{id}",
       label: "Post",
       parent: "/users/{id}/posts",
+    },
+  ]);
+
+  expect(
+    buildBreadcrumbTrail("/users/123/posts/321/wildcard", breadcrumbs)
+  ).toStrictEqual([
+    { path: "/", label: "Home" },
+    { path: "/users", label: "Users", parent: "/" },
+    { path: "/users/{id}", label: "User", parent: "/users" },
+    { path: "/users/{id}/posts", label: "Posts", parent: "/users/{id}" },
+    {
+      path: "/users/{id}/posts/{id}",
+      label: "Post",
+      parent: "/users/{id}/posts",
+    },
+    {
+      path: "/users/{id}/posts/{id}/*",
+      label: "Post",
+      parent: "/users/{id}/posts/{id}",
+    },
+  ]);
+
+  expect(
+    buildBreadcrumbTrail("/users/123/posts/321/wildcard/comments", breadcrumbs)
+  ).toStrictEqual([
+    { path: "/", label: "Home" },
+    { path: "/users", label: "Users", parent: "/" },
+    { path: "/users/{id}", label: "User", parent: "/users" },
+    { path: "/users/{id}/posts", label: "Posts", parent: "/users/{id}" },
+    {
+      path: "/users/{id}/posts/{id}",
+      label: "Post",
+      parent: "/users/{id}/posts",
+    },
+    {
+      path: "/users/{id}/posts/{id}/*",
+      label: "Post",
+      parent: "/users/{id}/posts/{id}",
+    },
+    {
+      path: "/users/{id}/posts/{id}/*/comments",
+      label: "Comments",
+      parent: "/users/{id}/posts/{id}/*",
     },
   ]);
 });
