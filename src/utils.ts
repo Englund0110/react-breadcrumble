@@ -5,7 +5,9 @@ export const matchBreadcrumbByPath = (
   definitions: Breadcrumb[]
 ): Breadcrumb | undefined => {
   return definitions.find((breadcrumb) => {
-    const breadcrumbPath = breadcrumb.path.replace(/{[^/]+}/g, "([^/]+)");
+    let breadcrumbPath = breadcrumb.path.replace(/{[^/]+}/g, "([^/]+)");
+    breadcrumbPath = breadcrumbPath.replace(/\*/g, "([^/]+)");
+
     const regex = new RegExp(`^${breadcrumbPath}$`);
     return regex.test(path);
   });
@@ -25,7 +27,13 @@ export const buildBreadcrumbTrail = (
   trail.unshift(currentBreadcrumb);
 
   if (currentBreadcrumb.parent) {
-    return buildBreadcrumbTrail(currentBreadcrumb.parent, definitions, trail);
+    const parentBreadcrumb = matchBreadcrumbByPath(
+      currentBreadcrumb.parent,
+      definitions
+    );
+    if (parentBreadcrumb) {
+      return buildBreadcrumbTrail(parentBreadcrumb.path, definitions, trail);
+    }
   }
 
   return trail;
