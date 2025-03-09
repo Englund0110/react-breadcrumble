@@ -58,6 +58,7 @@ export const Breadcrumbs = () => {
       { label: "About", path: "/about", parent: "/" },
       { label: "Users", path: "/users", parent: "/" },
       { label: "User", path: "/users/{id}", parent: "/users" },
+      { label: "User", path: "/users/{id}/*", parent: "/users/{id}" }, // Use '*' as a wildcard to catch all nested routes under /users/{id}
     ]);
   }, [setBreadcrumbs]);
 
