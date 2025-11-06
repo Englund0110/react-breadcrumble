@@ -1,6 +1,10 @@
 import { useContext } from "react";
 import { BreadcrumbContext } from "./BreadcrumbContext";
 
+/**
+ * Hook to access breadcrumb context methods and state.
+ * @returns
+ */
 export const useBreadcrumbs = () => {
   const context = useContext(BreadcrumbContext);
   if (!context) {

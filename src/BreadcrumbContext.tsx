@@ -18,6 +18,9 @@ export const BreadcrumbProvider = ({
     initialBreadcrumbs || []
   );
 
+  /**
+   * Method to update a breadcrumb's label and parameters.
+   */
   const updateBreadcrumb = useCallback(
     (
       path: string,
@@ -34,6 +37,9 @@ export const BreadcrumbProvider = ({
     [setBreadcrumbs]
   );
 
+  /**
+   * Method to reset a breadcrumb to its initial state.
+   */
   const resetBreadcrumb = useCallback(
     (path: string) => {
       const initialBreadcrumb = initialBreadcrumbs?.find(
@@ -48,6 +54,9 @@ export const BreadcrumbProvider = ({
     [setBreadcrumbs]
   );
 
+  /**
+   * Method to get the breadcrumb trail for a given path.
+   */
   const getBreadcrumbTrail = useCallback(
     (currentPath: string) => {
       return buildBreadcrumbTrail(currentPath, breadcrumbs);

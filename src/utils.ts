@@ -1,5 +1,11 @@
 import { type Breadcrumb } from "./types";
 
+/**
+ * Method to match a breadcrumb by path, supporting dynamic segments and wildcards.
+ * @param path The path to match
+ * @param definitions The list of breadcrumb definitions
+ * @returns The matched Breadcrumb or undefined
+ */
 export const matchBreadcrumbByPath = (
   path: string,
   definitions: Breadcrumb[]
@@ -13,6 +19,13 @@ export const matchBreadcrumbByPath = (
   });
 };
 
+/**
+ * Method to build the breadcrumb trail for a given path.
+ * @param currentPath The current path
+ * @param definitions The list of breadcrumb definitions
+ * @param trail The accumulated breadcrumb trail
+ * @returns Array of Breadcrumbs representing the trail
+ */
 export const buildBreadcrumbTrail = (
   currentPath: string,
   definitions: Breadcrumb[],
@@ -39,6 +52,12 @@ export const buildBreadcrumbTrail = (
   return trail;
 };
 
+/**
+ * Method to replace path parameters with actual values.
+ * @param path The path with parameters
+ * @param params The parameters to replace
+ * @returns The path with parameters replaced
+ */
 export const replacePathParams = (
   path: string,
   params?: { key: string; value: string }[]

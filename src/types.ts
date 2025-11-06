@@ -1,3 +1,6 @@
+/**
+ * Type representing a single breadcrumb.
+ */
 export type Breadcrumb = {
   label: string;
   path: string;
@@ -5,6 +8,9 @@ export type Breadcrumb = {
   parent?: string | undefined;
 };
 
+/**
+ * Type for the Breadcrumb Context.
+ */
 export type BreadcrumbContextType = {
   breadcrumbs: Breadcrumb[];
   setBreadcrumbs: React.Dispatch<React.SetStateAction<Breadcrumb[]>>;
@@ -17,6 +23,9 @@ export type BreadcrumbContextType = {
   getBreadcrumbTrail: (currentPath: string) => Breadcrumb[];
 };
 
+/**
+ * Props for the BreadcrumbProvider component.
+ */
 export type BreadcrumbProviderProps = {
   initialBreadcrumbs?: Breadcrumb[];
   children: React.ReactNode;
