@@ -1,49 +1,68 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
-import { Breadcrumb } from "./types";
+import { createContext, useCallback, useState } from "react";
+import {
+  type Breadcrumb,
+  type BreadcrumbContextType,
+  type BreadcrumbProviderProps,
+} from "./types";
 import { buildBreadcrumbTrail } from "./utils";
-
-type BreadcrumbContextType = {
-  breadcrumbs: Breadcrumb[];
-  setBreadcrumbs: React.Dispatch<React.SetStateAction<Breadcrumb[]>>;
-  updateBreadcrumb: (
-    path: string,
-    newLabel: string,
-    params?: { key: string; value: string }[]
-  ) => void;
-  getBreadcrumbTrail: (currentPath: string) => Breadcrumb[];
-};
-
-type BreadcrumbProviderProps = {
-  children: React.ReactNode;
-};
 
 export const BreadcrumbContext = createContext<
   BreadcrumbContextType | undefined
 >(undefined);
 
-export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
-  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+export const BreadcrumbProvider = ({
+  children,
+  breadcrumbs: initialBreadcrumbs,
+}: BreadcrumbProviderProps) => {
+  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>(
+    initialBreadcrumbs || []
+  );
 
+  /**
+   * Method to update a breadcrumb's label and parameters.
+   */
   const updateBreadcrumb = useCallback(
     (
       path: string,
       newLabel: string,
-      params?: { key: string; value: string }[]
+      params?: { key: string; value: string }[] | undefined
     ) => {
       setBreadcrumbs((prevBreadcrumbs) =>
-        prevBreadcrumbs.map((b) =>
-          b.path === path ? { ...b, label: newLabel, params } : b
+        prevBreadcrumbs.map(
+          (b): Breadcrumb =>
+            b.path === path ? { ...b, label: newLabel, params } : b
         )
       );
     },
     [setBreadcrumbs]
   );
 
-  const getBreadcrumbTrail = (currentPath: string): Breadcrumb[] => {
-    return useMemo(() => {
+  /**
+   * Method to reset a breadcrumb to its initial state.
+   */
+  const resetBreadcrumb = useCallback(
+    (path: string) => {
+      const initialBreadcrumb = initialBreadcrumbs?.find(
+        (b) => b.path === path
+      );
+      if (initialBreadcrumb) {
+        setBreadcrumbs((prevBreadcrumbs) =>
+          prevBreadcrumbs.map((b) => (b.path === path ? initialBreadcrumb : b))
+        );
+      }
+    },
+    [setBreadcrumbs]
+  );
+
+  /**
+   * Method to get the breadcrumb trail for a given path.
+   */
+  const getBreadcrumbTrail = useCallback(
+    (currentPath: string) => {
       return buildBreadcrumbTrail(currentPath, breadcrumbs);
-    }, [breadcrumbs, currentPath]);
-  };
+    },
+    [buildBreadcrumbTrail, breadcrumbs]
+  );
 
   return (
     <BreadcrumbContext.Provider
@@ -51,6 +70,7 @@ export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
         breadcrumbs,
         setBreadcrumbs,
         updateBreadcrumb,
+        resetBreadcrumb,
         getBreadcrumbTrail,
       }}
     >
