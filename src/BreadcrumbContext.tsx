@@ -28,11 +28,12 @@ export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
     (
       path: string,
       newLabel: string,
-      params?: { key: string; value: string }[]
+      params?: { key: string; value: string }[] | undefined
     ) => {
       setBreadcrumbs((prevBreadcrumbs) =>
-        prevBreadcrumbs.map((b) =>
-          b.path === path ? { ...b, label: newLabel, params } : b
+        prevBreadcrumbs.map(
+          (b): Breadcrumb =>
+            b.path === path ? { ...b, label: newLabel, params } : b
         )
       );
     },
