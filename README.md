@@ -27,13 +27,23 @@ See the following StackBlitz examples for full implementation:
 
 ### Simple implementation
 
-Wrapping the application with BreadcrumbProvider.
+Wrap the application with BreadcrumbProvider and pass in the list of breadcrumb definitions.
 
 ```typescript
 // main.tsx
+const breadcrumbs = [
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about", parent: "/" },
+  { label: "Users", path: "/users", parent: "/" },
+  { label: "User", path: "/users/{id}", parent: "/users" },
+  { label: "Resume", path: "/users/{id}/resume", parent: "/users/{id}" },
+];
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BreadcrumbProvider>...</BreadcrumbProvider>
+    <BreadcrumbProvider breadcrumbs={breadcrumbs}>
+      <RouterProvider router={router} />
+    </BreadcrumbProvider>
   </StrictMode>
 );
 ```
@@ -42,33 +52,26 @@ Create a component that dynamically generates the breadcrumb trail based on the 
 
 ```typescript
 // Breadcrumbs.tsx
-import { useEffect } from "react";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { replacePathParams, useBreadcrumbs } from "react-breadcrumble";
 
 export const Breadcrumbs = () => {
-  const currentPath = window.location.pathname;
-  const { setBreadcrumbs, getBreadcrumbTrail } = useBreadcrumbs();
+  const router = useRouterState();
+  const { getBreadcrumbTrail } = useBreadcrumbs();
 
-  const trail = getBreadcrumbTrail(currentPath);
-
-  // Set initial breadcrumbs.
-  useEffect(() => {
-    setBreadcrumbs([
-      { label: "Home", path: "/" },
-      { label: "About", path: "/about", parent: "/" },
-      { label: "Users", path: "/users", parent: "/" },
-      { label: "User", path: "/users/{id}", parent: "/users" },
-      { label: "User", path: "/users/{id}/*", parent: "/users/{id}" }, // Use '*' as a wildcard to catch all nested routes under /users/{id}
-    ]);
-  }, [setBreadcrumbs]);
+  const trail = getBreadcrumbTrail(router.location.pathname);
 
   return (
     <ul className="breadcrumb">
       {trail.map((breadcrumb, index) => (
         <li key={index}>
-          <a href={replacePathParams(breadcrumb.path, breadcrumb.params)}>
-            {breadcrumb.label}
-          </a>
+          {trail.length === index + 1 ? (
+            breadcrumb.label
+          ) : (
+            <Link to={replacePathParams(breadcrumb.path, breadcrumb.params)}>
+              {breadcrumb.label}
+            </Link>
+          )}
         </li>
       ))}
     </ul>
@@ -78,18 +81,15 @@ export const Breadcrumbs = () => {
 
 ### Update breadcrumb dynamically
 
-To update a breadcrumb label based on external data (e.g., user details), use the `updateBreadcrumb` function. This allows you to modify the breadcrumb trail dynamically.
+To update a breadcrumb label based on external data (e.g., user details), use the `updateBreadcrumb` function. This allows you to modify the breadcrumb trail dynamically. Use `resetBreadcrumb` to reset the value back to its initial state.
 
 ```typescript
 // User.tsx
 function User() {
-  const [user, setUser] = useState<UserModel>();
   const { userId } = Route.useParams();
-  const { updateBreadcrumb } = useBreadcrumbs();
+  const { updateBreadcrumb, resetBreadcrumb } = useBreadcrumbs();
 
-  useEffect(() => {
-    setUser(users.find((u) => u.id === userId));
-  }, [userId]);
+  const user = users.find((u) => u.id === userId);
 
   useEffect(() => {
     // Replace {id} with the user identifier, and replace label with the name of the user.
@@ -98,9 +98,9 @@ function User() {
     ]);
 
     return () => {
-      updateBreadcrumb("/users/{id}", ""); // Reset breadcrumb when leaving component.
+      resetBreadcrumb("/users/{id}");
     };
-  }, [user, updateBreadcrumb]);
+  }, [user, updateBreadcrumb, resetBreadcrumb]);
 
   return (
     <>
