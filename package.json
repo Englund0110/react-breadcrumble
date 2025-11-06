@@ -2,7 +2,7 @@
   "name": "react-breadcrumble",
   "version": "1.4.0",
   "description": "A flexible and easy-to-use library for managing breadcrumbs in React applications",
-  "author": "Søren Englund",
+  "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/Englund0110/react-breadcrumble#readme",
   "bugs": {
@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/Englund0110/react-breadcrumble.git"
   },
+  "author": "Søren Englund",
   "files": [
     "dist"
   ],
