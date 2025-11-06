@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
 import { BreadcrumbContext } from "./BreadcrumbContext";
 import { buildBreadcrumbTrail } from "./utils";
-import { Breadcrumb } from "./types";
+import { type Breadcrumb } from "./types";
 
 export const useBreadcrumbs = () => {
   const context = useContext(BreadcrumbContext);

@@ -1,4 +1,4 @@
-import { Breadcrumb } from "./types";
+import { type Breadcrumb } from "./types";
 
 export const matchBreadcrumbByPath = (
   path: string,

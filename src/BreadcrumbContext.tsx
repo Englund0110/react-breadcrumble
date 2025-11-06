@@ -1,5 +1,5 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
-import { Breadcrumb } from "./types";
+import { createContext, useCallback, useMemo, useState } from "react";
+import { type Breadcrumb } from "./types";
 import { buildBreadcrumbTrail } from "./utils";
 
 type BreadcrumbContextType = {
