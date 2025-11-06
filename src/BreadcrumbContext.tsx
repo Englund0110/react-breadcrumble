@@ -10,7 +10,7 @@ export const BreadcrumbContext = createContext<
   BreadcrumbContextType | undefined
 >(undefined);
 
-export const BreadcrumbsProvider = ({
+export const BreadcrumbProvider = ({
   children,
   initialBreadcrumbs,
 }: BreadcrumbProviderProps) => {
