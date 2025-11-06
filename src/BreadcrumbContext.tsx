@@ -12,7 +12,7 @@ export const BreadcrumbContext = createContext<
 
 export const BreadcrumbProvider = ({
   children,
-  initialBreadcrumbs,
+  breadcrumbs: initialBreadcrumbs,
 }: BreadcrumbProviderProps) => {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>(
     initialBreadcrumbs || []

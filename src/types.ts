@@ -27,6 +27,6 @@ export type BreadcrumbContextType = {
  * Props for the BreadcrumbProvider component.
  */
 export type BreadcrumbProviderProps = {
-  initialBreadcrumbs?: Breadcrumb[];
+  breadcrumbs?: Breadcrumb[];
   children: React.ReactNode;
 };
