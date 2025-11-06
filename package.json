@@ -1,6 +1,6 @@
 {
   "name": "react-breadcrumble",
-  "version": "2.0.0-alpha1.0",
+  "version": "2.0.0-alpha1.1",
   "description": "A flexible and easy-to-use library for managing breadcrumbs in React applications",
   "type": "module",
   "license": "MIT",
@@ -32,6 +32,7 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "release": "bumpp && pnpm publish",
+    "release-alpha": "bumpp && pnpm publish --tag alpha",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
