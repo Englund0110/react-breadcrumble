@@ -1,28 +1,22 @@
-import { createContext, useCallback, useMemo, useState } from "react";
-import { type Breadcrumb } from "./types";
+import { createContext, useCallback, useState } from "react";
+import {
+  type Breadcrumb,
+  type BreadcrumbContextType,
+  type BreadcrumbProviderProps,
+} from "./types";
 import { buildBreadcrumbTrail } from "./utils";
-
-type BreadcrumbContextType = {
-  breadcrumbs: Breadcrumb[];
-  setBreadcrumbs: React.Dispatch<React.SetStateAction<Breadcrumb[]>>;
-  updateBreadcrumb: (
-    path: string,
-    newLabel: string,
-    params?: { key: string; value: string }[]
-  ) => void;
-  getBreadcrumbTrail: (currentPath: string) => Breadcrumb[];
-};
-
-type BreadcrumbProviderProps = {
-  children: React.ReactNode;
-};
 
 export const BreadcrumbContext = createContext<
   BreadcrumbContextType | undefined
 >(undefined);
 
-export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
-  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+export const BreadcrumbsProvider = ({
+  children,
+  initialBreadcrumbs,
+}: BreadcrumbProviderProps) => {
+  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>(
+    initialBreadcrumbs || []
+  );
 
   const updateBreadcrumb = useCallback(
     (
@@ -40,11 +34,26 @@ export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
     [setBreadcrumbs]
   );
 
-  const getBreadcrumbTrail = (currentPath: string): Breadcrumb[] => {
-    return useMemo(() => {
+  const resetBreadcrumb = useCallback(
+    (path: string) => {
+      const initialBreadcrumb = initialBreadcrumbs?.find(
+        (b) => b.path === path
+      );
+      if (initialBreadcrumb) {
+        setBreadcrumbs((prevBreadcrumbs) =>
+          prevBreadcrumbs.map((b) => (b.path === path ? initialBreadcrumb : b))
+        );
+      }
+    },
+    [setBreadcrumbs]
+  );
+
+  const getBreadcrumbTrail = useCallback(
+    (currentPath: string) => {
       return buildBreadcrumbTrail(currentPath, breadcrumbs);
-    }, [breadcrumbs, currentPath]);
-  };
+    },
+    [buildBreadcrumbTrail, breadcrumbs]
+  );
 
   return (
     <BreadcrumbContext.Provider
@@ -52,6 +61,7 @@ export const BreadcrumbProvider = ({ children }: BreadcrumbProviderProps) => {
         breadcrumbs,
         setBreadcrumbs,
         updateBreadcrumb,
+        resetBreadcrumb,
         getBreadcrumbTrail,
       }}
     >
