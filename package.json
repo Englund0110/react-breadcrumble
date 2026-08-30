@@ -39,14 +39,14 @@
     "react": "^18.3.1 || ^19"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@tsconfig/strictest": "^2.0.7",
-    "@types/react": "^19.2.2",
-    "bumpp": "^10.3.1",
-    "eslint": "^9.39.1",
-    "tsdown": "^0.16.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.4",
-    "vitest": "^4.0.6"
+    "@eslint/js": "^10.0.1",
+    "@tsconfig/strictest": "^2.0.8",
+    "@types/react": "^19.2.18",
+    "bumpp": "^12.2.2",
+    "eslint": "^10.9.1",
+    "tsdown": "^0.22.14",
+    "typescript": "^7.0.2",
+    "typescript-eslint": "^8.68.0",
+    "vitest": "^4.1.11"
   }
 }
